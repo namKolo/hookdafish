@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useEventListener from './index';
 
 describe('usEventListener', () => {
-  test('import useEventListener from "rockitto/useEventListener"', () => {
+  test('import useEventListener from "hookdafish/useEventListener"', () => {
     expect(typeof useEventListener).toBe('function');
   });
 
@@ -44,7 +44,7 @@ describe('usEventListener', () => {
     expect(childEventListener).toHaveBeenCalledTimes(1);
   });
 
-  test('Should update event listener without rebinding', async () => {
+  test('Should update event listener without rebinding (change event listener)', async () => {
     const event1 = jest.fn<void, [Event]>();
     const event2 = jest.fn<void, [Event]>();
     const childElement = document.createElement('div');
