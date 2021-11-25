@@ -1,20 +1,18 @@
 import { useEffect, useMemo, useRef } from 'react';
+import { ElementTarget } from '../utils/dom';
 
 type AttachOptions = Pick<
   AddEventListenerOptions,
   'capture' | 'passive' | 'once'
 >;
-
 type EventHandler = (event: Event) => void;
 
-type HookProps = {
-  eventName: keyof WindowEventMap | string;
-  handler: EventHandler;
-  element?: HTMLElement;
-  options?: AttachOptions;
-};
-
-function useEventListener({ eventName, handler, element, options }: HookProps) {
+function useEventListener(
+  element: ElementTarget,
+  eventName: string,
+  handler: EventHandler,
+  options?: AttachOptions
+) {
   const cachedHandler = useRef<EventHandler>();
 
   useEffect(() => {
@@ -24,7 +22,7 @@ function useEventListener({ eventName, handler, element, options }: HookProps) {
   const memorizedOptions = useMemo(() => options, [options]);
 
   useEffect(() => {
-    const targetedElement = element;
+    const targetedElement = element?.current;
     if (!targetedElement || !targetedElement.addEventListener) {
       return;
     }
