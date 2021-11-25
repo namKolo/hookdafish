@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import useEventListener from '../useEventListener';
-import { ElementTarget } from '../utils/dom';
+import { ElementTarget, getElementTarget } from '../utils/dom';
 
 interface IUseVirtualList {
   containerRef: ElementTarget;
@@ -30,7 +30,7 @@ function useVirtualList(params: IUseVirtualList) {
 
   // Make sure the container is scrollable
   useEffect(() => {
-    const container = containerRef.current;
+    const container = getElementTarget(containerRef);
     if (container) {
       container.style.overflow = 'auto';
     }
@@ -52,8 +52,8 @@ function useVirtualList(params: IUseVirtualList) {
    */
   const getVisibleRange = () => {
     // Resolve the HtmlElement
-    const container = containerRef.current;
-    const wrapper = listRef.current;
+    const container = getElementTarget(containerRef);
+    const wrapper = getElementTarget(listRef);
 
     if (!container || !wrapper) {
       return { start: 0, end: overscan };
@@ -74,8 +74,8 @@ function useVirtualList(params: IUseVirtualList) {
   };
 
   const updateWrapperPosition = () => {
-    const container = containerRef.current;
-    const wrapper = listRef.current;
+    const container = getElementTarget(containerRef);
+    const wrapper = getElementTarget(listRef);
 
     if (container && wrapper) {
       const { start } = getVisibleRange();

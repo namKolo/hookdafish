@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { ElementTarget } from '../utils/dom';
+import { ElementTarget, getElementTarget } from '../utils/dom';
 
 type AttachOptions = Pick<
   AddEventListenerOptions,
@@ -17,12 +17,13 @@ function useEventListener(
 
   useEffect(() => {
     cachedHandler.current = handler;
+    console.log('should update cached');
   }, [handler]);
 
   const memorizedOptions = useMemo(() => options, [options]);
 
   useEffect(() => {
-    const targetedElement = element?.current;
+    const targetedElement = getElementTarget(element);
     if (!targetedElement || !targetedElement.addEventListener) {
       return;
     }
