@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 
-import useEventListener from './index';
+import useEventListener from '../index';
 
 const createDumpTarget = () => {
   const childElement = document.createElement('div');

@@ -10,7 +10,11 @@ interface IUseVirtualList {
   overscan?: number;
 }
 
-function useVirtualList(params: IUseVirtualList) {
+export interface IUseVirtualListResult {
+  isItemVisible: (index: number) => boolean;
+}
+
+function useVirtualList(params: IUseVirtualList): IUseVirtualListResult {
   const {
     containerRef,
     listRef,
