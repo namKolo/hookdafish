@@ -18,7 +18,6 @@ function useVirtualList(params: IUseVirtualList) {
     itemHeight,
     overscan = 5,
   } = params;
-
   // TrIcK - forceUpdate to trigger re-render the list
   const [, forceUpdate] = useState(0);
 
@@ -34,7 +33,7 @@ function useVirtualList(params: IUseVirtualList) {
     if (container) {
       container.style.overflow = 'auto';
     }
-  }, []);
+  }, [containerRef]);
 
   /**
    * | --------------------- |

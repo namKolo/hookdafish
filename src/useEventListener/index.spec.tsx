@@ -1,23 +1,12 @@
 import { fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import React from 'react';
 
 import useEventListener from './index';
-
-jest.mock('react', () => {
-  return {
-    ...jest.requireActual<typeof React>('react'),
-    useRef: function<T>(v: T) {
-      return { current: v };
-    },
-  };
-});
 
 const createDumpTarget = () => {
   const childElement = document.createElement('div');
   jest.spyOn(childElement, 'addEventListener');
-  const ref = React.useRef<HTMLDivElement>(childElement);
-  return ref;
+  return childElement;
 };
 
 describe('usEventListener', () => {
@@ -32,7 +21,7 @@ describe('usEventListener', () => {
       useEventListener(childElement, 'click', childEventListener);
     });
 
-    fireEvent.click(childElement.current);
+    fireEvent.click(childElement);
     expect(childEventListener).toHaveBeenCalledTimes(1);
   });
 
@@ -44,13 +33,13 @@ describe('usEventListener', () => {
       useEventListener(childElement, 'click', childEventListener);
     });
 
-    fireEvent.click(childElement.current);
+    fireEvent.click(childElement);
     rerender();
-    expect(childElement.current.addEventListener).toHaveBeenCalledTimes(1);
+    expect(childElement.addEventListener).toHaveBeenCalledTimes(1);
     expect(childEventListener).toHaveBeenCalledTimes(1);
   });
 
-  test.skip('Should update event listener without rebinding', async () => {
+  test('Should update event listener without rebinding', async () => {
     const event1 = jest.fn<void, [Event]>();
     const event2 = jest.fn<void, [Event]>();
     const childElement = document.createElement('div');
@@ -60,7 +49,6 @@ describe('usEventListener', () => {
     let count = 0;
     const { rerender } = renderHook(() => {
       count++;
-      console.log(count);
       const event = count === 1 ? event1 : event2;
       useEventListener(childElement, 'click', event);
     });

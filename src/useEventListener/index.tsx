@@ -17,7 +17,6 @@ function useEventListener(
 
   useEffect(() => {
     cachedHandler.current = handler;
-    console.log('should update cached');
   }, [handler]);
 
   const memorizedOptions = useMemo(() => options, [options]);
